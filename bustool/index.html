@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css"
+   integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+   integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.3.3/leaflet.css" />
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.3.3/leaflet.js"></script>
+   <link href="https://fonts.googleapis.com/css?family=Comfortaa|Emblema+One|Libre+Franklin" rel="stylesheet">
+   <link rel="stylesheet" href="C:\Users\vlingenfelter\Desktop\BusAmen\bustool\bustool.css">
+   <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY&callback=myMap"></script>
+   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+   <script type="text/javascript"
+   src="C:\Users\vlingenfelter\Desktop\BusAmen\bustool\bustool.js"></script>
+   <script type='text/javascript'
+   src="C:\Users\vlingenfelter\Desktop\BusAmen\bustool\towns.js"></script>
+   <script type='text/javascript'
+   src="C:\Users\vlingenfelter\Desktop\BusAmen\bustool\stops.js"></script>
+   <script type='text/javascript'
+   src='C:\Users\vlingenfelter\Desktop\BusAmen\bustool\busstops.geojson'></script>
+   <script src="/js/qleaflet.jquery.js"></script>
+</head>
+
+<body>
+
+
+
+<!--  -->
+<!--  -->
+<!-- TITLE BAR -->
+<!--  -->
+<!--  -->
+<div class = "title">
+  <h1><img src="opmibus.png" alt="Bus Icon" height="40px"> Bus Amenities Tool</h1>
+</div>
+
+
+<!--  -->
+<!--  -->
+<!-- HOW TO USE TOOL -->
+<!--  -->
+<!--  -->
+<div class="row">
+    <div class="col-4">
+      <div class = "howto">
+      <!-- Trigger the modal with a button -->
+      <button type="button" class="btn btn-block" data-toggle="modal" data-target="#howto"
+      id="howtobtn">
+        <i class="fas fa-info-circle"></i> How to use this tool</button>
+      <!-- Modal -->
+      <div id="howto" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+          <!-- Modal content-->
+          <div class="modal-content">
+            <div class="modal-header">
+              <h3 class="modal-title">How to use this tool:</h3>
+            </div>
+
+            <div class="modal-body">
+              <h5> Step 1: </h5>
+              <p>Choose the dataset that will be used for the ranking.</p>
+              <h5> Step 2: </h5>
+              <p>Use the sliders to weight different qualities to your liking. The
+                weights you choose will change the criteria for which buses are selected
+                for getting new amenities. <br><br>
+              When you are satisfied with your selection, press SUBMIT</p>
+              <h5> Step 3: </h5>
+              <p> Review the output of your selections and rankings in the map viewer.
+              It is at this point that you can click DOWNLOAD DATA to export the
+            data from your selections as a .csv</p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+<!--  -->
+<!--  -->
+<!-- DATA SELECTION -->
+<!--  -->
+<!--  -->
+<div class = "checkbox-container">
+  <h3> What stops should we analyze? </h3>
+  <!-- SURFACE LEVEL LIGHT RAIL -->
+  <div class = "row">
+    <div class = "col-8 slider-label">
+    <p> Surface-level Light Rail Stops
+       <a href="#" data-toggle="modal" data-target="#surfLRModal">
+      <i class="fas fa-info-circle"></i></a></p>
+      <!-- Surface level Lightrail Modal -->
+      <div id="surfLRModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+          <!-- Modal content-->
+          <div class="modal-content">
+            <div class="modal-header">
+              <h3 class="modal-title"> Surface-level Light Rail</h3>
+            </div>
+            <div class="modal-body">
+              <p> Surface level light rail is... </p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+      </div>
+    <!-- Surface level Light Rail Toggle Slider -->
+    <div class = "col-4">
+      <label class="switch">
+        <input type="checkbox" value="">
+        <span class = "toggle-slider round"></span>
+      </label>
+    </div>
+  </div>
+  <!-- BUSWAYS -->
+  <div class = "row">
+    <div class = "col-8 slider-label">
+      <p> Busways
+         <a href="#" data-toggle="modal" data-target="#buswayModal">
+        <i class="fas fa-info-circle"></i></a></p>
+        <!-- Busway Modal -->
+        <div id="buswayModal" class="modal fade" role="dialog">
+          <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+              <div class="modal-header">
+                <h3 class="modal-title"> Busways</h3>
+              </div>
+              <div class="modal-body">
+                <p> A busway is... </p>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+    </div>
+    <div class = "col-4">
+      <label class="switch">
+        <input type="checkbox" value="">
+        <span class = "toggle-slider round"></span>
+      </label>
+    </div>
+  </div>
+  <div class = "row">
+    <div class = "col-8 slider-label">
+      <p> Stops in Rapid Transit Stations
+         <a href="#" data-toggle="modal" data-target="#stopsRTModal">
+        <i class="fas fa-info-circle"></i></a></p>
+        <!-- Surface level Lightrail Modal -->
+        <div id="stopsRTModal" class="modal fade" role="dialog">
+          <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+              <div class="modal-header">
+                <h3 class="modal-title"> Stops in Rapid Transit Stations</h3>
+              </div>
+              <div class="modal-body">
+                <p> A stop inside a rapid transit station... </p>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+    <div class = "col-4">
+      <label class="switch">
+        <input type="checkbox" value="">
+        <span class = "toggle-slider round"></span>
+      </label>
+    </div>
+  </div>
+  <div class = "row">
+    <div class = "col-8 slider-label">
+      <p> Streetside Bus Stops
+         <a href="#" data-toggle="modal" data-target="#streetBusModal">
+        <i class="fas fa-info-circle"></i></a></p>
+        <!-- RT Bus Modal -->
+        <div id="streetBusModal" class="modal fade" role="dialog">
+          <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+              <div class="modal-header">
+                <h3 class="modal-title"> Streetside Bus Stops</h3>
+              </div>
+              <div class="modal-body">
+                <p> A streetside bus stop is... </p>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+    </div>
+    <div class = "col-4">
+      <label class="switch">
+        <input type="checkbox" value="" checked>
+        <span class = "toggle-slider round"></span>
+      </label>
+    </div>
+  </div>
+</div>
+
+
+<!--  -->
+<!--  -->
+<!-- SLIDERS -->
+<!--  -->
+<!--  -->
+    <div class="slidecontainer">
+      <h3>What matters most to you?</h3>
+      <div class="row">
+        <div class="col-4 slider-label">
+          <!-- Trigger the modal with a button -->
+          <p> Vulnerability
+             <a href="#" data-toggle="modal" data-target="#vulnModal">
+            <i class="fas fa-info-circle"></i></a></p>
+            <!-- Modal -->
+            <div id="vulnModal" class="modal fade" role="dialog">
+              <div class="modal-dialog">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h3 class="modal-title">Vulnerability</h3>
+                  </div>
+
+                  <div class="modal-body">
+                    <h5> What is this index?</h5>
+                    <p> How was this created </p>
+                    <h5> Why include this index?</h5>
+                    <p> Why have this? </p>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+        </div>
+        <div class="col-8">
+      <input type="range" min="0" max="40" value="20" step="10" class="slider" id="vulnsslider">
+      </div>
+      </div>
+      <div class="row">
+        <div class="col-4 slider-label">
+          <!-- Trigger the modal with a button -->
+          <p> Total Ridership
+             <a href="#" data-toggle="modal" data-target="#riderModal">
+            <i class="fas fa-info-circle"></i></a></p>
+            <!-- Modal -->
+            <div id="riderModal" class="modal fade" role="dialog">
+              <div class="modal-dialog">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h3 class="modal-title">Total Ridership</h3>
+                  </div>
+
+                  <div class="modal-body">
+                    <h5> What is this index?</h5>
+                    <p> How was this created </p>
+                    <h5> Why include this index?</h5>
+                    <p> Why have this? </p>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+        </div>
+        <div class="col-8">
+      <input type="range" min="0" max="40" value="20" step="10" class="slider" id="riderslider">
+      </div>
+      </div>
+      <div class="row">
+        <div class="col-4 slider-label">
+          <!-- Trigger the modal with a button -->
+          <p> Frequency
+             <a href="#" data-toggle="modal" data-target="#freqModal">
+            <i class="fas fa-info-circle"></i></a></p>
+            <!-- Modal -->
+            <div id="freqModal" class="modal fade" role="dialog">
+              <div class="modal-dialog">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h3 class="modal-title">Frequency of Service</h3>
+                  </div>
+
+                  <div class="modal-body">
+                    <h5> What is this index?</h5>
+                    <p> How was this created </p>
+                    <h5> Why include this index?</h5>
+                    <p> Why have this? </p>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+        </div>
+        <div class="col-8">
+      <input type="range" min="0" max="40" value="20" step="10" class="slider" id="freqslider">
+      </div>
+      </div>
+      <div class="row">
+        <div class="col-4 slider-label">
+          <!-- Trigger the modal with a button -->
+          <p> Nearby Infrastructure
+             <a href="#" data-toggle="modal" data-target="#amenModal">
+            <i class="fas fa-info-circle"></i></a></p>
+            <!-- Modal -->
+            <div id="amenModal" class="modal fade" role="dialog">
+              <div class="modal-dialog">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h3 class="modal-title">Current Amenities</h3>
+                  </div>
+
+                  <div class="modal-body">
+                    <h5> What is this index?</h5>
+                    <p> How was this created </p>
+                    <h5> Why include this index?</h5>
+                    <p> Why have this? </p>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+        </div>
+        <div class="col-8">
+      <input type="range" min="0" max="40" value="20" step="10" class="slider" id="amenslider">
+      </div>
+      </div>
+      <div class = "row">
+        <button class = "btn btn-block submit" style="background-color:#e58652">
+          <i class="fas fa-map-marked-alt"></i>  Calculate Results
+        </button>
+      </div>
+    </div>
+
+
+<!--  -->
+<!--  -->
+<!-- BUTTON BAG -->
+<!--  -->
+<!--  -->
+    <div class = "button-bag">
+        <!-- Trigger the modal with a button -->
+        <button type="button" class="btn" data-toggle="modal" data-target="#myModal">
+          <i class="fas fa-info-circle"></i> More Info</button>
+        <!-- Modal -->
+        <div id="myModal" class="modal fade" role="dialog">
+          <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+              <div class="modal-header">
+                <h3 class="modal-title">How was this model created?</h3>
+              </div>
+
+              <div class="modal-body">
+                <p>We aren't really sure how this model was created yet because we haven't made it...</p>
+                <p>For more info about OPMI, check out our
+                  <a href="http://www.mbtabackontrack.com/performance/index.html#/home">website</a>
+                </p>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      <button id = "export" class = "btn" data-toggle = "tooltip" title = "Exports data as .csv">
+         <i class="fas fa-file-download"></i>  Download </button>
+     </div>
+     </div>
+
+
+
+<!--  -->
+<!--  -->
+<!-- MAP -->
+<!--  -->
+<!--  -->
+<div class="col-8">
+  <div id = "mapid">
+  </div>
+</div>
+</div>
+
+
+<!--  -->
+<!--  -->
+<!-- BOTTOM BAR -->
+<!--  -->
+<!--  -->
+  <div class = "bottom-bar">
+    <h4> Made with <i class = "fas fa-heart" style="color:#ffbaad"></i> by OPMI </h4>
+    <p style="color:white"> Processed with <i class = "fas fa-coffee"></i> by interns </p>
+  </div>
+
+
+</body>
+<script type="text/javascript" src="C:\Users\vlingenfelter\Desktop\BusAmen\bustool\bustoolmap.js"></script>
+</html>
