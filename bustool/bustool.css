@@ -12,28 +12,35 @@ Contrast purple: #8058a2
 Contrast gold: #dea326
 Contrast deep red: #de5445
  */
-
+/* html {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+} */
 body {
-  overflow: hidden;
+  overflow: auto;
+  height: 100%;
+  width: 100%;
 }
 .title {
   background-color: #1FA898;
-  padding: 10px;
   text-align: center;
+  padding: 0.5em;
 }
 p {
-  font-size: .83em;
+  font-size: 0.9em;
   font-family: 'Comfortaa', sans-serif;
 }
 h1 {
   font-weight: 400;
   color: white;
   font-family: 'Comfortaa', sans-serif;
-  font-size: 3em;
+  font-size: 3vw;
 }
 h3 {
   font-family: 'Comfortaa', sans-serif;
   color: #545454;
+  font-size: 1.25em;
 }
 h4 {
   font-family: 'Comfortaa', sans-serif;
@@ -45,18 +52,50 @@ h5 {
 }
 
 #mapid {
-  height:100%;
+  height: 100%;
+}
+
+#left-hand-tools {
+  height: 100%;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  overflow-y: scroll;
+  padding: 0;
+}
+
+#right-hand-map {
+  height: 100%;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  overflow-y: hidden;
+  padding: 0;
 }
 
 .button-bag {
-  margin: 1em;
+  margin: 0.5em;
+  text-align: center;
+  font-family: 'Libre Franklin', sans-serif;
+}
+.button-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.btn-sm {
+  margin-top: 1vh;
+}
+.howto {
+  margin: 0.75em;
   text-align: center;
   font-family: 'Libre Franklin', sans-serif;
   float: none;
 }
-
-.howto {
-  margin: 1em;
+.welcome {
+  margin: 0.75em;
   text-align: center;
   font-family: 'Libre Franklin', sans-serif;
   float: none;
@@ -67,17 +106,15 @@ h5 {
 button {
   background-color: #1b4e60;
   color: white;
-  padding: 15px;
+  padding: 1em;
   display: flex;
   justify-content: center;
 }
 
 .bottom-bar {
   background-color: #1FA898;
-  padding: 10px;
   text-align: center;
-  font-family: 'Libre Franklin', sans-serif;
-  height: auto;
+  padding: 0.5em;
 }
 
 .slider-label {
@@ -87,13 +124,18 @@ button {
 
 }
 .slidecontainer {
-  margin: 2.5em;
+  margin: 1em;
+  padding: 0.5em;
 }
 .checkbox-container {
-  margin: 2.5em;
+  margin: 1em;
+  padding: 0.5em;
 }
 .checkbox {
   padding-left: 4em;
+}
+li  {
+  margin-left: 0.75em;
 }
 .slider {
     -webkit-appearance: none;
@@ -152,12 +194,15 @@ a:hover {
     background-color: transparent;
     text-decoration: underline;
 }
+.isDisabled {
+  color: #d3d3d3;
+}
 /* The switch - the box around the slider */
 .switch {
   position: relative;
   display: inline-block;
-  width: 54px;
-  height: 28px;
+  width: 3.2em;
+  height: 1.5em;
 }
 
 /* Hide default HTML checkbox */
@@ -179,10 +224,10 @@ a:hover {
 .toggle-slider:before {
   position: absolute;
   content: "";
-  height: 20px;
-  width: 20px;
-  left: 4px;
-  bottom: 4px;
+  height: 1.1em;
+  width: 1.1em;
+  left: 0.2em;
+  bottom: 0.2em;
   background-color: white;
   -webkit-transition: .4s;
   transition: .4s;
@@ -204,11 +249,14 @@ input:checked + .toggle-slider:before {
 
 /* Rounded sliders */
 .toggle-slider.round {
-  border-radius: 34px;
+  border-radius: 3em;
 }
 
 .toggle-slider.round:before {
   border-radius: 50%;
+}
+.toggle-settings {
+  padding-left: 0.5em;
 }
 .info {
     padding: 6px 8px;
@@ -221,4 +269,34 @@ input:checked + .toggle-slider:before {
 .info h4 {
     margin: 0 0 5px;
     color: #777;
+}
+
+/* width */
+::-webkit-scrollbar {
+    width: 0.75em;
+}
+
+/* Track */
+::-webkit-scrollbar-track-piece {
+    background: #d3d3d3;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #1fa898;
+    opacity: 0.7;
+}
+.toolbar-section {
+  margin-top: 1.5em;
+}
+.legend {
+    line-height: 18px;
+    color: #555;
+}
+.legend i {
+    width: 18px;
+    height: 18px;
+    float: left;
+    margin-right: 8px;
+    opacity: 0.7;
 }
