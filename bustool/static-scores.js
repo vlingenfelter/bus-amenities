@@ -3,10 +3,10 @@ var vuln = document.getElementById("vulnsslider").value;
 var transfers = document.getElementById("transferslider").value;
 var origin = document.getElementById("originslider").value;
 
-var perc_poc, perc_nv, perc_lic, perc_tap, perc_senTAP, zVuln, sorted, ranks, org;
-var zPocAdj, zLicAdj, zNvAdj, zSenTapAdj, zOrg, zVuln, zTotal;
-var pocMean, licMean, nvMean, senTAPMean, tapMean, orgMean;
-var pocStd, licStd, nvStd, senTAPStd, tapStd, orgStd;
+var perc_poc, perc_nv, perc_lic, perc_tap, perc_senTAP, zVuln, sorted, ranks, org, trans, ridershipIndex;
+var zPocAdj, zLicAdj, zNvAdj, zSenTapAdj, zOrg, zVuln, zTotal, zTrans;
+var pocMean, licMean, nvMean, senTAPMean, tapMean, orgMean, transMean;
+var pocStd, licStd, nvStd, senTAPStd, tapStd, orgStd, transStd;
 
 
 function resetVulnComponentLists() {
@@ -22,8 +22,20 @@ function resetVulnComponentLists() {
   zNvAdj = [];
   zSenTapAdj = [];
   org = [];
+  trans = [];
   zTotal = [];
   zOrg = [];
+  zTrans = [];
+  ridershipIndex = [];
+}
+
+function fixRidershipData(features) {
+  if (isNaN(features[i].properties.oriders)) {
+    features[i].properties.oriders = 0;
+  };
+  if (isNaN(features[i].properties.transfers_)) {
+    features[i].properties.transfers_ = 0;
+  };
 }
 
 function populateVulnComponentLists(features) {
@@ -39,19 +51,33 @@ function populateVulnComponentLists(features) {
     } else {
       org.push(features[i].properties.oriders);
     }
+    if (isNaN(features[i].properties.transfers_)) {
+      trans.push(0);
+    } else {
+      trans.push(features[i].properties.transfers_);
+    }
+    //trans[i] *= scaleSlideVals(transfers);
+    //org[i] *= scaleSlideVals(origin);
+    //ridershipIndex[i] = trans[i] + org[i];
   }
+
+
+
+
 
   pocMean = mean(perc_poc);
   licMean = mean(perc_lic);
   nvMean = mean(perc_nv);
   senTAPMean = mean(perc_senTAP);
   orgMean = mean(org);
+  transMean = mean(trans);
 
   pocStd = std(perc_poc);
   licStd = std(perc_lic);
   nvStd = std(perc_nv);
   senTAPStd = std(perc_senTAP);
   orgStd = std(org);
+  transStd = std(trans);
 
   for (var i = 0; i < features.length; i++) {
     features[i].properties.Zpoc = (features[i].properties.Perc_POC - pocMean) / pocStd;
@@ -59,7 +85,9 @@ function populateVulnComponentLists(features) {
     features[i].properties.Znv = (features[i].properties.Perc_NV - nvMean) / nvStd;
     features[i].properties.ZsenTAP = (perc_senTAP[i] - senTAPMean) / senTAPStd;
     features[i].properties.Zorg = (org[i] - orgMean) / orgStd;
+    features[i].properties.Ztrans = (trans[i] - transMean) / transStd;
     zOrg.push(features[i].properties.Zorg);
+    zTrans.push(features[i].properties.Ztrans);
     zPocAdj.push(adjustPOC(features[i].properties.Zpoc));
     //zPocAdj[i] *= .15;
     zLicAdj.push(adjustLIC(features[i].properties.Zlic));
@@ -70,9 +98,19 @@ function populateVulnComponentLists(features) {
     //zSenTapAdj[i] *= .3;
     zVuln[i] = zPocAdj[i] + zLicAdj[i] + zNvAdj[i] + zSenTapAdj[i];
     features[i].properties.Zvuln = zVuln[i];
-    zVuln[i] *= scaleSlideVals(vuln);
-    zOrg[i] *= scaleSlideVals(origin);
-    zTotal[i] = zVuln[i] + zOrg[i];
+    zVuln[i] *= vuln;
+    zOrg[i] *= origin;
+    zTrans[i] *= transfers;
+    zTotal[i] = zVuln[i] + zOrg[i] + zTrans[i];
+    /*
+    if (vuln > 0) {
+      zTotal[i] += zVuln[i];
+    } else (origin > 0) {
+      zTotal[i] += zOrg[i];
+    } else (transfers > 0) {
+      zTotal[i] += Ztrans[i];
+    }
+    */
   };
   var sorted = zTotal.slice().sort(function(a,b){return b-a})
   var ranks = zTotal.slice().map(function(v){ return sorted.indexOf(v)+1 });
